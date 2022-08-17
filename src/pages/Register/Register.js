@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import * as Yup from "yup";
 import Announcement from "../../components/Announcement";
 import Header from "../../components/Header";
@@ -17,9 +17,9 @@ const Container = styled.div`
   width: 100%;
 `;
 const SignIn = styled.div`
-width: 30%;
+  width: 30%;
   padding: 30px 0;
-margin: 20px 0;
+  margin: 20px 0;
   height: 400px;
 `;
 const SignInTitle = styled.h1`
@@ -44,13 +44,14 @@ const SignInSubtitle = styled.div`
   margin-bottom: 20px;
   text-align: center;
   cursor: pointer;
-  color:#625e5e;
-  :hover{
+  color: #625e5e;
+
+  :hover {
     color: black;
   }
 `;
 const Button = styled.button`
-${ButtonTemplate};
+  ${ButtonTemplate};
   width: 100%;
 `;
 const CreateAccount = styled.div`
@@ -71,8 +72,8 @@ const CreateAccTitle = styled.h1`
 `;
 
 const Errors = styled.div`
-    margin-bottom: 5px;
-    color: red;
+  margin-bottom: 5px;
+  color: red;
 `;
 
 
@@ -91,53 +92,53 @@ const Register = () => {
         }),
         onSubmit: values => {
             console.log(values)
-            // alert(JSON.stringify(values, null, 2));
         },
     });
     return (
         <div>
             <Announcement/>
             <Header/>
-           <Container>
-               <SignIn>
-              <SignInTitle>
-                  CUSTOMER LOGIN
-              </SignInTitle>
-                   <SignInInput>
-                       <Input placeholder="E-mail" />
-                       <Input placeholder="Password" />
-                   </SignInInput>
-                   <SignInSubtitle>
-                       Forgot Your Password?
-                   </SignInSubtitle>
-                   <Button>
-                       LOGIN
-                   </Button>
-               </SignIn>
-               <CreateAccount>
-                   <CreateAccTitle>REGISTER</CreateAccTitle>
-                   <Form onSubmit={formik.handleSubmit}>
-                   {/*<Input placeholder="First Name" />*/}
-                   {/*<Input placeholder="Last Name" />*/}
-                   <Input placeholder="E-mail" id="email"
-                          type="email" {...formik.getFieldProps('email')} />
-                          {formik.touched.email && formik.errors.email ? (
-                              <Errors>{formik.errors.email}</Errors>
-                          ) : null}
-                   <Input placeholder="Password" id="password"
-                          type="text" {...formik.getFieldProps('password')}/>
-                       {formik.touched.password && formik.errors.password ? (
-                           <Errors>{formik.errors.password}</Errors>
-                       ) : null}
-                    <Input placeholder="Confirm password" id="passwordConfirmation"
-                           type="text" {...formik.getFieldProps('passwordConfirmation')}/>
-                       {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation ? (
-                           <Errors>{formik.errors.passwordConfirmation}</Errors>
-                       ) : null}
-                   </Form>
-                   <Button type="submit" >CREATE ACCOUNT</Button>
-               </CreateAccount>
-           </Container>
+            <Container>
+                <SignIn>
+                    <SignInTitle>
+                        CUSTOMER LOGIN
+                    </SignInTitle>
+                    <SignInInput>
+                        <Input placeholder="E-mail"/>
+                        <Input placeholder="Password"/>
+                    </SignInInput>
+                    <SignInSubtitle>
+                        Forgot Your Password?
+                    </SignInSubtitle>
+                    <Button>
+                        LOGIN
+                    </Button>
+                </SignIn>
+                <CreateAccount>
+                    <CreateAccTitle>REGISTER</CreateAccTitle>
+                    <Form onSubmit={formik.handleSubmit}>
+                        {/*<Input placeholder="First Name" />*/}
+                        {/*<Input placeholder="Last Name" />*/}
+                        {JSON.stringify(formik.errors)}
+                        <Input placeholder="E-mail" id="email"
+                               type="email" {...formik.getFieldProps('email')} />
+                        {formik.touched.email && formik.errors.email ? (
+                            <Errors>{formik.errors.email}</Errors>
+                        ) : null}
+                        <Input placeholder="Password" id="password"
+                               type="text" {...formik.getFieldProps('password')}/>
+                        {formik.touched.password && formik.errors.password ? (
+                            <Errors>{formik.errors.password}</Errors>
+                        ) : null}
+                        <Input placeholder="Confirm password" id="passwordConfirmation"
+                               type="text" {...formik.getFieldProps('passwordConfirmation')}/>
+                        {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation ? (
+                            <Errors>{formik.errors.passwordConfirmation}</Errors>
+                        ) : null}
+                        <Button type="submit">CREATE ACCOUNT</Button>
+                    </Form>
+                </CreateAccount>
+            </Container>
             <NewsLetter/>
             <Footer/>
         </div>

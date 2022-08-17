@@ -119,7 +119,7 @@ const Slider = () => {
                                     <Title>{slide.title}</Title>
                                     <Description>{slide.desc}</Description>
                                     <Button>
-                                        // onClick={() => navigation("/catalogItem")}>
+                                        {/*// onClick={() => navigation("/catalogItem")}>*/}
                                             Buy now
 
                                     </Button>
