@@ -8,6 +8,7 @@ import {getCatalog} from "./redux/slices/catalogSlice";
 import {useDispatch} from "react-redux";
 import {data} from "./data";
 import Register from "./pages/Register";
+import SignIn from "./components/SignIn";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const App = () => {
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/*" element={<NotFound/>}/>
                 <Route path="/register" element={<Register/>}/>
+                <Route path="/signin" element={<SignIn/>}/>
             </Routes>
         </BrowserRouter>
     );

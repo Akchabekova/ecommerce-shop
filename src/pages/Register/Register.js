@@ -1,12 +1,17 @@
-import React from 'react';
+import React , {useEffect} from 'react';
 import styled from "styled-components";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import toast, { Toaster } from "react-hot-toast";
 import Announcement from "../../components/Announcement";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import NewsLetter from "../../components/NewsLetter";
 import {ButtonTemplate} from "../../mixines/mixines";
+import {useDispatch, useSelector} from "react-redux";
+import {signupUser} from "../../redux/slices/userSlice";
+import {useNavigate} from "react-router-dom";
+
 
 const Container = styled.div`
   background-color: rgba(245, 245, 245, 0.94);
@@ -16,22 +21,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
 `;
-const SignIn = styled.div`
-  width: 30%;
-  padding: 30px 0;
-  margin: 20px 0;
-  height: 400px;
-`;
-const SignInTitle = styled.h1`
-  font-size: 30px;
-  margin-bottom: 20px;
-  text-align: center;
-`;
-const SignInInput = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-`;
+
 const Input = styled.input`
   margin-bottom: 10px;
   padding: 15px 25px;
@@ -39,17 +29,7 @@ const Input = styled.input`
   border-radius: 4px;
   border: 1px solid darkcyan;
 `;
-const SignInSubtitle = styled.div`
-  font-size: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  cursor: pointer;
-  color: #625e5e;
 
-  :hover {
-    color: black;
-  }
-`;
 const Button = styled.button`
   ${ButtonTemplate};
   width: 100%;
@@ -60,7 +40,7 @@ const CreateAccount = styled.div`
 
 
 `;
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
@@ -78,6 +58,9 @@ const Errors = styled.div`
 
 
 const Register = () => {
+    const dispatch = useDispatch();
+    const { isFetching, isError, isSuccess, errorMessage } = useSelector(s => s.user)
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -91,36 +74,32 @@ const Register = () => {
                 .oneOf([Yup.ref("password"), null], "Password must match").required('Password is required'),
         }),
         onSubmit: values => {
-            console.log(values)
+            delete values.passwordConfirmation
+            dispatch(signupUser(values))
         },
     });
-    return (
+
+
+    useEffect(() => {
+        if (isSuccess) {
+            navigate("/")
+        }
+        if (isError) {
+            toast.error(errorMessage)
+        }
+    }, [isSuccess, isError, dispatch, errorMessage, navigate])
+
+   return (
         <div>
             <Announcement/>
             <Header/>
             <Container>
-                <SignIn>
-                    <SignInTitle>
-                        CUSTOMER LOGIN
-                    </SignInTitle>
-                    <SignInInput>
-                        <Input placeholder="E-mail"/>
-                        <Input placeholder="Password"/>
-                    </SignInInput>
-                    <SignInSubtitle>
-                        Forgot Your Password?
-                    </SignInSubtitle>
-                    <Button>
-                        LOGIN
-                    </Button>
-                </SignIn>
-                <CreateAccount>
+        <CreateAccount>
                     <CreateAccTitle>REGISTER</CreateAccTitle>
                     <Form onSubmit={formik.handleSubmit}>
                         {/*<Input placeholder="First Name" />*/}
                         {/*<Input placeholder="Last Name" />*/}
-                        {JSON.stringify(formik.errors)}
-                        <Input placeholder="E-mail" id="email"
+                      <Input placeholder="E-mail" id="email"
                                type="email" {...formik.getFieldProps('email')} />
                         {formik.touched.email && formik.errors.email ? (
                             <Errors>{formik.errors.email}</Errors>
@@ -141,6 +120,7 @@ const Register = () => {
             </Container>
             <NewsLetter/>
             <Footer/>
+            <Toaster />
         </div>
     );
 };

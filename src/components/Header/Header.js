@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from "styled-components";
 import "boxicons"
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom"
+import {logout} from "../../redux/slices/userSlice";
 
 
 const Container = styled.div`
@@ -86,7 +87,9 @@ const MenuItem = styled.button`
 
 
 const Header = () => {
-    const {totalAmount} = useSelector(s => s.cart)
+    const { totalAmount } = useSelector(s => s.cart)
+    const { isSuccess , user } = useSelector(s => s.user)
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     return (
         <Container>
@@ -101,11 +104,26 @@ const Header = () => {
                 </SearchContainer>
             </Left>
             <Menu>
-                <MenuItem>
-                    <Link to="/Register">
-                        <i className='bx bx-user' />
-                    </Link>
-                </MenuItem>
+                {
+                   isSuccess ?
+                       <>
+                           <MenuItem>
+                               Welcome, {user.email}!
+                           </MenuItem>
+                           <MenuItem onClick={ () => dispatch(logout())}>
+                               Logout
+                           </MenuItem>
+                       </>
+                       :
+                       (<>
+                           <MenuItem onClick={() => navigate("/register")}>
+                               <i className='bx bx-user-plus'/>
+                           </MenuItem>
+                           <MenuItem onClick={() => navigate("/signin")}>
+                               <i className='bx bx-user'/>
+                           </MenuItem>
+                       </>)
+                }
                 <MenuItem onClick={() => navigate("cart")}>
                     <CartIcon>
                         <Badge>{totalAmount}</Badge>
